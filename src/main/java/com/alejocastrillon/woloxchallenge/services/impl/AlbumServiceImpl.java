@@ -53,7 +53,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     /**
-     * Gets the albums created by a user.
+     * Gets the albums created by an user.
      *
      * @param userId User ID
      * @return Album list

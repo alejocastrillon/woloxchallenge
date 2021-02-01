@@ -17,8 +17,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Relationship between album and user entity class.
@@ -27,7 +28,8 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "permission_user_shared_album")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "Relationship between album and user entity class")
@@ -39,7 +41,7 @@ public class PermissionUserSharedAlbum implements Serializable {
     @ApiModelProperty(name = "Identifier of the relationship between album and"
             + " user")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     /**
      * Shared album information.
