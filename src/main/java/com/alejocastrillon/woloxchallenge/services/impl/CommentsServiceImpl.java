@@ -6,6 +6,7 @@
 package com.alejocastrillon.woloxchallenge.services.impl;
 
 import com.alejocastrillon.woloxchallenge.services.CommentService;
+import com.alejocastrillon.woloxchallenge.services.exception.httpstatus.NotFoundException;
 import com.alejocastrillon.woloxchallenge.web.dto.CommentDto;
 import java.util.Arrays;
 import java.util.List;
@@ -49,24 +50,36 @@ public class CommentsServiceImpl implements CommentService {
      * Gets all the comments filtered by user email field.
      *
      * @param filter Filter param
+     * @throws NotFoundException No comments were found under this parameter
      * @return List of comment
      */
     @Override
     public List<CommentDto> getCommentsFilteredByEmail(String filter) {
-        return Arrays.asList(restTemplate.getForObject(
-                baseUrl + "/comments?email=" + filter, CommentDto[].class));
+        try {
+            return Arrays.asList(restTemplate.getForObject(
+                    baseUrl + "/comments?email=" + filter, CommentDto[].class));
+        } catch (RuntimeException e) {
+            throw new NotFoundException("No comments were found under"
+                    + " this parameter");
+        }
     }
 
     /**
      * Gets all the comments filtered by name field.
      *
      * @param filter Filter param
+     * @throws NotFoundException No comments were found under this parameter
      * @return List of comment
      */
     @Override
     public List<CommentDto> getCommentsFilteredByName(String filter) {
-        return Arrays.asList(restTemplate.getForObject(
-                baseUrl + "/comments?name=" + filter, CommentDto[].class));
+        try {
+            return Arrays.asList(restTemplate.getForObject(
+                    baseUrl + "/comments?name=" + filter, CommentDto[].class));
+        } catch (Exception e) {
+            throw new NotFoundException("No comments were found under"
+                    + " this parameter");
+        }
     }
 
 }

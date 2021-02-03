@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,14 +47,14 @@ public class AlbumController {
                 responseContainer = "List<>", response = AlbumDto.class)
     })
     @GetMapping()
-    public ResponseEntity getAlbums() {
-        return new ResponseEntity(service.getAlbums(), HttpStatus.OK);
+    public ResponseEntity<List<AlbumDto>> getAlbums() {
+        return new ResponseEntity<>(service.getAlbums(), HttpStatus.OK);
     }
 
     /**
      * Returns in a response entity the albums associated to an user.
      *
-     * @param userId User ID
+     * @param userId Identificator of the user that we want to know their albums
      * @return Response entity with albums
      */
     @ApiOperation(value = "Returns in a response entity the albums associated"
@@ -64,9 +65,10 @@ public class AlbumController {
                 response = AlbumDto.class)
     })
     @GetMapping("/user/{userId}")
-    public ResponseEntity getAlbumsByUser(@ApiParam(value = "User ID")
-            @PathVariable("userId") Integer userId) {
-        return new ResponseEntity(service.getAlbumsByUser(userId),
+    public ResponseEntity<List<AlbumDto>> getAlbumsByUser(
+            @ApiParam(value = "Identificator of the user that we want to know"
+                    + " their albums") @PathVariable("userId") Integer userId) {
+        return new ResponseEntity<>(service.getAlbumsByUser(userId),
                 HttpStatus.OK);
     }
 

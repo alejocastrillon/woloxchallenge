@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.alejocastrillon.woloxchallenge.model.repository.SharedAlbumRepository;
+import com.alejocastrillon.woloxchallenge.services.UserService;
+import com.alejocastrillon.woloxchallenge.services.exception.httpstatus.NotFoundException;
 
 /**
  * Implementation of album service.
@@ -30,10 +31,10 @@ public class AlbumServiceImpl implements AlbumService {
     private RestTemplate restTemplate;
 
     /**
-     * Shared album repository instance.
+     * User service instance.
      */
     @Autowired
-    private SharedAlbumRepository repository;
+    private UserService userService;
 
     /**
      * Base url of externa rest service.
@@ -60,11 +61,28 @@ public class AlbumServiceImpl implements AlbumService {
      */
     @Override
     public List<AlbumDto> getAlbumsByUser(Integer userId) {
-        if (userId != null) {
-            return Arrays.asList(restTemplate.getForObject(baseUrl
-                    + "/albums?userId=" + userId, AlbumDto[].class));
+        userService.getUser(userId);
+        return Arrays.asList(restTemplate.getForObject(baseUrl
+                + "/albums?userId=" + userId, AlbumDto[].class));
+
+    }
+
+    /**
+     * Gets a specific album information
+     *
+     * @param albumId Album identifier
+     * @throws NotFoundException No album was found with the identifier
+     * @return Album information
+     */
+    @Override
+    public AlbumDto getAlbum(Integer albumId) {
+        try {
+            return restTemplate.getForObject(baseUrl + "/albums/" + albumId,
+                    AlbumDto.class);
+        } catch (RuntimeException e) {
+            throw new NotFoundException("No album was found with the"
+                    + " identifier: " + albumId);
         }
-        return null;
     }
 
 }

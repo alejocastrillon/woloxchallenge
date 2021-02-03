@@ -8,15 +8,17 @@ package com.alejocastrillon.woloxchallenge.web.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Album DTO class.
  *
  * @author alejandroutp
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "Album DTO class")
@@ -28,9 +30,9 @@ public class AlbumDto {
     @ApiModelProperty(name = "Album identifier")
     private Integer id;
     /**
-     * User ID.
+     * Identifier of the user who owns the album.
      */
-    @ApiModelProperty(name = "User ID")
+    @ApiModelProperty(name = "Identifier of the user who owns the album")
     private Integer userId;
     /**
      * Album title.

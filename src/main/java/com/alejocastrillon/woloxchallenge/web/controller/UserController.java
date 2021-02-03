@@ -8,6 +8,7 @@ package com.alejocastrillon.woloxchallenge.web.controller;
 import com.alejocastrillon.woloxchallenge.services.UserService;
 import com.alejocastrillon.woloxchallenge.web.dto.UserDto;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,9 @@ public class UserController {
             response = UserDto.class, responseContainer = "List<>",
             code = 200)
     @GetMapping()
-    public ResponseEntity getUsers() {
-        return new ResponseEntity(service.getUsers(), HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> getUsers() {
+        return new ResponseEntity<>(service.getUsers(),
+                HttpStatus.OK);
     }
 
 }

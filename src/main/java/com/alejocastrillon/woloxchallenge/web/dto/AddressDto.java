@@ -8,44 +8,47 @@ package com.alejocastrillon.woloxchallenge.web.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Address DTO class.
  *
  * @author alejandroutp
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "Address DTO class")
 public class AddressDto {
 
     /**
-     * Street address.
+     * Street address of the user.
      */
-    @ApiModelProperty(name = "Street address")
+    @ApiModelProperty(name = "Street address of the user")
     private String street;
     /**
-     * Suite address.
+     * Suite address of the user.
      */
-    @ApiModelProperty(name = "Suite address")
+    @ApiModelProperty(name = "Suite address of the user")
     private String suite;
     /**
-     * City address.
+     * City address of the user.
      */
-    @ApiModelProperty(name = "City address")
+    @ApiModelProperty(name = "City address of the user")
     private String city;
     /**
-     * ZIP code address.
+     * ZIP code address of the user.
      */
-    @ApiModelProperty(name = "ZIP code address")
+    @ApiModelProperty(name = "ZIP code address of the user")
     private String zipcode;
     /**
-     * Latitude and longitude of the address.
+     * Latitude and longitude of the address of the user.
      */
-    @ApiModelProperty(name = "Latitude and longitude of the address")
+    @ApiModelProperty(name = "Latitude and longitude of the address of the"
+            + " user")
     private GeoDto geo;
 
 }

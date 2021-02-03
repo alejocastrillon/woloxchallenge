@@ -8,6 +8,7 @@ package com.alejocastrillon.woloxchallenge.services.impl;
 import org.springframework.stereotype.Service;
 import com.alejocastrillon.woloxchallenge.services.PhotoService;
 import com.alejocastrillon.woloxchallenge.services.AlbumService;
+import com.alejocastrillon.woloxchallenge.services.UserService;
 import com.alejocastrillon.woloxchallenge.web.dto.PhotoDto;
 import com.alejocastrillon.woloxchallenge.web.dto.AlbumDto;
 import java.util.ArrayList;
@@ -36,6 +37,11 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private AlbumService albumService;
     /**
+     * User service instance.
+     */
+    @Autowired
+    private UserService userService;
+    /**
      * Base url for rest template.
      */
     @Value("${external.base.url}")
@@ -61,15 +67,14 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public List<PhotoDto> getPhotosByUser(Integer userId) {
         List<PhotoDto> photosByUser = null;
-        if (userId != null) {
-            List<AlbumDto> albumsByUser = albumService.getAlbumsByUser(userId);
-            if (albumsByUser != null && !albumsByUser.isEmpty()) {
-                photosByUser = new ArrayList<>();
-                for (AlbumDto album : albumsByUser) {
-                    photosByUser.addAll(Arrays.asList(restTemplate.getForObject(
-                            baseUrl + "/photos?albumId=" + album.getId(),
-                            PhotoDto[].class)));
-                }
+        userService.getUser(userId);
+        List<AlbumDto> albumsByUser = albumService.getAlbumsByUser(userId);
+        if (albumsByUser != null && !albumsByUser.isEmpty()) {
+            photosByUser = new ArrayList<>();
+            for (AlbumDto album : albumsByUser) {
+                photosByUser.addAll(Arrays.asList(restTemplate.getForObject(
+                        baseUrl + "/photos?albumId=" + album.getId(),
+                        PhotoDto[].class)));
             }
         }
         return photosByUser;

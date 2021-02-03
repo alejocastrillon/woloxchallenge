@@ -49,9 +49,9 @@ public class CommentController {
         @ApiResponse(code = 204, message = "No comments")
     })
     @GetMapping()
-    public ResponseEntity getAllComments() {
+    public ResponseEntity<List<CommentDto>> getAllComments() {
         List<CommentDto> comments = service.getAllComents();
-        return new ResponseEntity(comments, comments != null
+        return new ResponseEntity<>(comments, comments != null
                 && !comments.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
@@ -69,10 +69,11 @@ public class CommentController {
         @ApiResponse(code = 204, message = "No content")
     })
     @GetMapping("/name")
-    public ResponseEntity getCommentsByName(@ApiParam(value = "Filter param")
+    public ResponseEntity<List<CommentDto>> getCommentsByName(
+            @ApiParam(value = "Filter param")
             @RequestParam("param") String param) {
         List<CommentDto> comments = service.getCommentsFilteredByName(param);
-        return new ResponseEntity(comments, comments != null
+        return new ResponseEntity<>(comments, comments != null
                 && !comments.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
@@ -90,10 +91,11 @@ public class CommentController {
         @ApiResponse(code = 204, message = "No content")
     })
     @GetMapping("/email")
-    public ResponseEntity getCommentsByEmail(@ApiParam(value = "Filter param")
+    public ResponseEntity<List<CommentDto>> getCommentsByEmail(
+            @ApiParam(value = "Filter param")
             @RequestParam("param") String param) {
         List<CommentDto> comments = service.getCommentsFilteredByEmail(param);
-        return new ResponseEntity(comments, comments != null
+        return new ResponseEntity<>(comments, comments != null
                 && !comments.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 

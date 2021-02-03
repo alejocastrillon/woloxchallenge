@@ -30,4 +30,12 @@ public interface AlbumService {
      */
     List<AlbumDto> getAlbumsByUser(Integer userId);
 
+    /**
+     * Gets a specific album information
+     *
+     * @param id Album identifier
+     * @return Album information
+     */
+    AlbumDto getAlbum(Integer id);
+
 }

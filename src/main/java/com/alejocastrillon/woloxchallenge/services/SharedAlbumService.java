@@ -30,4 +30,23 @@ public interface SharedAlbumService {
      */
     List<SharedAlbumDto> getSharedAlbums();
 
+    /**
+     * Gets the information about specific shared album.
+     *
+     * @param sharedAlbumId Identifier of the shared album from which we want
+     * the information
+     * @return Shared album information
+     */
+    SharedAlbumDto getSharedAlbum(Integer sharedAlbumId);
+
+    /**
+     * Gets the users associated to a specific album and a specific permission.
+     *
+     * @param albumId Album identificator
+     * @param permission Permission name
+     * @return Shared album list
+     */
+    List<SharedAlbumDto> getUsersBySharedAlbumAndPermission(Integer albumId,
+            String permission);
+
 }

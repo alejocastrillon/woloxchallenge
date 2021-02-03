@@ -6,6 +6,7 @@
 package com.alejocastrillon.woloxchallenge.services.impl;
 
 import com.alejocastrillon.woloxchallenge.services.UserService;
+import com.alejocastrillon.woloxchallenge.services.exception.httpstatus.NotFoundException;
 import com.alejocastrillon.woloxchallenge.web.dto.UserDto;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +44,24 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsers() {
         return Arrays.asList(restTemplate
                 .getForObject(baseUrl + "/users", UserDto[].class));
+    }
+
+    /**
+     * Gets the information about a specific user.
+     *
+     * @param userId Identifier of the user whose we want
+     * @throws NotFoundException In case that the user is not found
+     * @return User information
+     */
+    @Override
+    public UserDto getUser(Integer userId) {
+        try {
+            return restTemplate.getForObject(baseUrl + "/users/" + userId,
+                    UserDto.class);
+        } catch (RuntimeException e) {
+            throw new NotFoundException("No user found with the identifier: "
+                    + userId);
+        }
     }
 
 }

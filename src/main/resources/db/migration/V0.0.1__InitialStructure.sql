@@ -9,20 +9,12 @@
  */
 
 CREATE TABLE IF NOT EXISTS shared_album(
-    id INT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    album_id INT NOT NULL,
     user_id INT NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    can_read BOOLEAN NOT NULL,
-    can_write BOOLEAN NOT NULL,
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS permission_user_shared_album(
-    id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS shared_album_permission(
     shared_album_id INT NOT NULL,
-    FOREIGN KEY(shared_album_id) REFERENCES shared_album(id),
-    user_id INT NOT NULL,
-    can_read BOOLEAN NOT NULL,
-    can_write BOOLEAN NOT NULL,
-    PRIMARY KEY(id)
-);
+    permission VARCHAR(10) NOT NULL);

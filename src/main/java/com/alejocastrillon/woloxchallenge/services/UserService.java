@@ -22,4 +22,12 @@ public interface UserService {
      */
     List<UserDto> getUsers();
 
+    /**
+     * Gets the information about a specific user.
+     *
+     * @param userId Identifier of the user whose we want
+     * @return User information
+     */
+    UserDto getUser(Integer userId);
+
 }

@@ -9,6 +9,7 @@ import com.alejocastrillon.woloxchallenge.services.PhotoService;
 import com.alejocastrillon.woloxchallenge.web.dto.PhotoDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,8 @@ public class PhotoController {
             + " in the service", response = PhotoDto.class,
             responseContainer = "List<>", code = 200)
     @GetMapping()
-    public ResponseEntity getPhotos() {
-        return new ResponseEntity(service.getPhotos(), HttpStatus.OK);
+    public ResponseEntity<List<PhotoDto>> getPhotos() {
+        return new ResponseEntity<>(service.getPhotos(), HttpStatus.OK);
     }
 
     /**
@@ -56,9 +57,10 @@ public class PhotoController {
             + " associated to an user", response = PhotoDto.class,
             responseContainer = "List<>", code = 200)
     @GetMapping("/user/{userId}")
-    public ResponseEntity getPhotosByUser(@ApiParam(value = "User ID")
+    public ResponseEntity<List<PhotoDto>> getPhotosByUser(
+            @ApiParam(value = "User ID")
             @PathVariable("userId") Integer userId) {
-        return new ResponseEntity(service.getPhotosByUser(userId),
+        return new ResponseEntity<>(service.getPhotosByUser(userId),
                 HttpStatus.OK);
     }
 

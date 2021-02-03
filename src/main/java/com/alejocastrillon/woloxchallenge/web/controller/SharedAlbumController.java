@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Shared albums controller.
@@ -50,11 +51,11 @@ public class SharedAlbumController {
         @ApiResponse(code = 400, message = "An error has occurred")
     })
     @PostMapping()
-    public ResponseEntity saveSharedAlbum(
+    public ResponseEntity<SharedAlbumDto> saveSharedAlbum(
             @ApiParam(value = "Shared album information")
             @RequestBody SharedAlbumDto album) {
         SharedAlbumDto saveAlbum = service.saveAlbumShared(album);
-        return new ResponseEntity(saveAlbum, saveAlbum != null
+        return new ResponseEntity<>(saveAlbum, saveAlbum != null
                 ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
     }
 
@@ -71,9 +72,38 @@ public class SharedAlbumController {
         @ApiResponse(code = 204, message = "No content")
     })
     @GetMapping()
-    public ResponseEntity getSharedAlbums() {
+    public ResponseEntity<List<SharedAlbumDto>> getSharedAlbums() {
         List<SharedAlbumDto> albums = service.getSharedAlbums();
-        return new ResponseEntity(albums, albums != null && !albums.isEmpty()
+        return new ResponseEntity<>(albums, albums != null && !albums.isEmpty()
                 ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
+
+    /**
+     * Returns in a response entity all the users with a specific album and
+     * specific permission.
+     *
+     * @param albumId Identificator of the album that we want to search
+     * @param permission Permission name that we want to search
+     * @return Response entity with the list of the shared album dto
+     */
+    @ApiOperation(value = "Returns in a response entity all the users with a"
+            + " specific album and specific permission")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "The shared albums with the album"
+                + " and permission associated were found",
+                response = SharedAlbumDto.class, responseContainer = "List<>"),
+        @ApiResponse(code = 404, message = "The permission or the album does"
+                + " not exist")
+    })
+    @GetMapping("/associated")
+    public ResponseEntity<List<SharedAlbumDto>> getUserByAlbumAndPermission(
+            @ApiParam(value = "Identificator of the album that we want to"
+                    + " search") @RequestParam("albumId") Integer albumId,
+            @ApiParam(value = "Permission name that we want to search")
+            @RequestParam("permission") String permission) {
+        return new ResponseEntity<>(service
+                .getUsersBySharedAlbumAndPermission(albumId, permission),
+                HttpStatus.OK);
+    }
+
 }
