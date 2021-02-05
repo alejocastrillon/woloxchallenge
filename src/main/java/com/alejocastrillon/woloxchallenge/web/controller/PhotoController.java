@@ -43,7 +43,7 @@ public class PhotoController {
             + " in the service", response = PhotoDto.class,
             responseContainer = "List<>", code = 200)
     @GetMapping()
-    public ResponseEntity<List<PhotoDto>> getPhotos() {
+    public ResponseEntity<PhotoDto[]> getPhotos() {
         return new ResponseEntity<>(service.getPhotos(), HttpStatus.OK);
     }
 

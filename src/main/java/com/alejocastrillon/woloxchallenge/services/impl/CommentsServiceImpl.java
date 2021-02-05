@@ -8,8 +8,6 @@ package com.alejocastrillon.woloxchallenge.services.impl;
 import com.alejocastrillon.woloxchallenge.services.CommentService;
 import com.alejocastrillon.woloxchallenge.services.exception.httpstatus.NotFoundException;
 import com.alejocastrillon.woloxchallenge.web.dto.CommentDto;
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,10 +28,15 @@ public class CommentsServiceImpl implements CommentService {
     private RestTemplate restTemplate;
 
     /**
-     * Base url for external Rest service.
+     * External Rest service base url.
      */
     @Value("${external.base.url}")
     private String baseUrl;
+
+    /**
+     * Not found exception message.
+     */
+    private static final String NOT_FOUND_EXCEPTION_MESSAGE = "No comments were found under by: ";
 
     /**
      * Gets all the comments.
@@ -41,9 +44,9 @@ public class CommentsServiceImpl implements CommentService {
      * @return List of comments
      */
     @Override
-    public List<CommentDto> getAllComents() {
-        return Arrays.asList(restTemplate.getForObject(baseUrl + "/comments",
-                CommentDto[].class));
+    public CommentDto[] getAllComents() {
+        return restTemplate.getForObject(baseUrl + "/comments",
+                CommentDto[].class);
     }
 
     /**
@@ -54,13 +57,12 @@ public class CommentsServiceImpl implements CommentService {
      * @return List of comment
      */
     @Override
-    public List<CommentDto> getCommentsFilteredByEmail(String filter) {
+    public CommentDto[] getCommentsFilteredByEmail(String filter) {
         try {
-            return Arrays.asList(restTemplate.getForObject(
-                    baseUrl + "/comments?email=" + filter, CommentDto[].class));
+            return restTemplate.getForObject(
+                    baseUrl + "/comments?email=" + filter, CommentDto[].class);
         } catch (RuntimeException e) {
-            throw new NotFoundException("No comments were found under"
-                    + " this parameter");
+            throw new NotFoundException(NOT_FOUND_EXCEPTION_MESSAGE + filter);
         }
     }
 
@@ -72,13 +74,11 @@ public class CommentsServiceImpl implements CommentService {
      * @return List of comment
      */
     @Override
-    public List<CommentDto> getCommentsFilteredByName(String filter) {
+    public CommentDto[] getCommentsFilteredByName(String filter) {
         try {
-            return Arrays.asList(restTemplate.getForObject(
-                    baseUrl + "/comments?name=" + filter, CommentDto[].class));
+            return restTemplate.getForObject(baseUrl + "/comments?name=" + filter, CommentDto[].class);
         } catch (Exception e) {
-            throw new NotFoundException("No comments were found under"
-                    + " this parameter");
+            throw new NotFoundException(NOT_FOUND_EXCEPTION_MESSAGE + filter);
         }
     }
 

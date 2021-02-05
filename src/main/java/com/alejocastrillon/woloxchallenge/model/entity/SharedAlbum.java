@@ -57,7 +57,7 @@ public class SharedAlbum implements Serializable {
      * Identifier of the user who is having access to the abum.
      */
     @ApiModelProperty(name = "Identifier of the user who is having access to"
-            + " the abum")
+            + " the album")
     @Column(name = "user_id")
     private Integer userId;
     /**

@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,10 +48,10 @@ public class CommentController {
         @ApiResponse(code = 204, message = "No comments")
     })
     @GetMapping()
-    public ResponseEntity<List<CommentDto>> getAllComments() {
-        List<CommentDto> comments = service.getAllComents();
+    public ResponseEntity<CommentDto[]> getAllComments() {
+        CommentDto[] comments = service.getAllComents();
         return new ResponseEntity<>(comments, comments != null
-                && !comments.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+                && comments.length > 0 ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -69,12 +68,12 @@ public class CommentController {
         @ApiResponse(code = 204, message = "No content")
     })
     @GetMapping("/name")
-    public ResponseEntity<List<CommentDto>> getCommentsByName(
+    public ResponseEntity<CommentDto[]> getCommentsByName(
             @ApiParam(value = "Filter param")
             @RequestParam("param") String param) {
-        List<CommentDto> comments = service.getCommentsFilteredByName(param);
+        CommentDto[] comments = service.getCommentsFilteredByName(param);
         return new ResponseEntity<>(comments, comments != null
-                && !comments.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+                && comments.length > 0 ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -91,12 +90,12 @@ public class CommentController {
         @ApiResponse(code = 204, message = "No content")
     })
     @GetMapping("/email")
-    public ResponseEntity<List<CommentDto>> getCommentsByEmail(
+    public ResponseEntity<CommentDto[]> getCommentsByEmail(
             @ApiParam(value = "Filter param")
             @RequestParam("param") String param) {
-        List<CommentDto> comments = service.getCommentsFilteredByEmail(param);
+        CommentDto[] comments = service.getCommentsFilteredByEmail(param);
         return new ResponseEntity<>(comments, comments != null
-                && !comments.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+                && comments.length > 0 ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
 }

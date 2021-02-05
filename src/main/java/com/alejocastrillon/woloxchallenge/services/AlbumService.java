@@ -5,7 +5,6 @@
  */
 package com.alejocastrillon.woloxchallenge.services;
 
-import java.util.List;
 import com.alejocastrillon.woloxchallenge.web.dto.AlbumDto;
 
 /**
@@ -20,7 +19,7 @@ public interface AlbumService {
      *
      * @return Album list
      */
-    List<AlbumDto> getAlbums();
+    AlbumDto[] getAlbums();
 
     /**
      * Gets the albums created by a user.
@@ -28,7 +27,7 @@ public interface AlbumService {
      * @param userId User ID
      * @return Album list
      */
-    List<AlbumDto> getAlbumsByUser(Integer userId);
+    AlbumDto[] getAlbumsByUser(Integer userId);
 
     /**
      * Gets a specific album information

@@ -20,7 +20,7 @@ public interface PhotoService {
      *
      * @return Photo list
      */
-    List<PhotoDto> getPhotos();
+    PhotoDto[] getPhotos();
 
     /**
      * Gets all the photos associated to a user.

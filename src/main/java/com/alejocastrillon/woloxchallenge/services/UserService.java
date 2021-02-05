@@ -5,7 +5,6 @@
  */
 package com.alejocastrillon.woloxchallenge.services;
 
-import java.util.List;
 import com.alejocastrillon.woloxchallenge.web.dto.UserDto;
 
 /**
@@ -20,7 +19,7 @@ public interface UserService {
      *
      * @return User list
      */
-    List<UserDto> getUsers();
+    UserDto[] getUsers();
 
     /**
      * Gets the information about a specific user.

@@ -7,8 +7,6 @@ package com.alejocastrillon.woloxchallenge.services.impl;
 
 import com.alejocastrillon.woloxchallenge.services.AlbumService;
 import com.alejocastrillon.woloxchallenge.web.dto.AlbumDto;
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,10 +35,15 @@ public class AlbumServiceImpl implements AlbumService {
     private UserService userService;
 
     /**
-     * Base url of externa rest service.
+     * External rest service base url.
      */
     @Value("${external.base.url}")
     private String baseUrl;
+
+    /**
+     * Not found exception message.
+     */
+    private static final String NOT_FOUND_EXCEPTION_MESSAGE = "No album was found with the identifier: ";
 
     /**
      * Gets all the albums.
@@ -48,9 +51,8 @@ public class AlbumServiceImpl implements AlbumService {
      * @return Album list
      */
     @Override
-    public List<AlbumDto> getAlbums() {
-        return Arrays.asList(restTemplate.getForObject(baseUrl + "/albums",
-                AlbumDto[].class));
+    public AlbumDto[] getAlbums() {
+        return restTemplate.getForObject(baseUrl + "/albums", AlbumDto[].class);
     }
 
     /**
@@ -60,10 +62,9 @@ public class AlbumServiceImpl implements AlbumService {
      * @return Album list
      */
     @Override
-    public List<AlbumDto> getAlbumsByUser(Integer userId) {
+    public AlbumDto[] getAlbumsByUser(Integer userId) {
         userService.getUser(userId);
-        return Arrays.asList(restTemplate.getForObject(baseUrl
-                + "/albums?userId=" + userId, AlbumDto[].class));
+        return restTemplate.getForObject(baseUrl + "/albums?userId=" + userId, AlbumDto[].class);
 
     }
 
@@ -77,11 +78,9 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public AlbumDto getAlbum(Integer albumId) {
         try {
-            return restTemplate.getForObject(baseUrl + "/albums/" + albumId,
-                    AlbumDto.class);
+            return restTemplate.getForObject(baseUrl + "/albums/" + albumId, AlbumDto.class);
         } catch (RuntimeException e) {
-            throw new NotFoundException("No album was found with the"
-                    + " identifier: " + albumId);
+            throw new NotFoundException(NOT_FOUND_EXCEPTION_MESSAGE + albumId);
         }
     }
 

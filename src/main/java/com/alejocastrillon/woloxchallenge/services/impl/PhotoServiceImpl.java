@@ -42,7 +42,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private UserService userService;
     /**
-     * Base url for rest template.
+     * External rest template base url.
      */
     @Value("${external.base.url}")
     private String baseUrl;
@@ -53,9 +53,8 @@ public class PhotoServiceImpl implements PhotoService {
      * @return Photo list
      */
     @Override
-    public List<PhotoDto> getPhotos() {
-        return Arrays.asList(restTemplate.getForObject(baseUrl + "/photos",
-                PhotoDto[].class));
+    public PhotoDto[] getPhotos() {
+        return restTemplate.getForObject(baseUrl + "/photos", PhotoDto[].class);
     }
 
     /**
@@ -68,13 +67,12 @@ public class PhotoServiceImpl implements PhotoService {
     public List<PhotoDto> getPhotosByUser(Integer userId) {
         List<PhotoDto> photosByUser = null;
         userService.getUser(userId);
-        List<AlbumDto> albumsByUser = albumService.getAlbumsByUser(userId);
-        if (albumsByUser != null && !albumsByUser.isEmpty()) {
+        AlbumDto[] albumsByUser = albumService.getAlbumsByUser(userId);
+        if (albumsByUser != null && albumsByUser.length > 0) {
             photosByUser = new ArrayList<>();
             for (AlbumDto album : albumsByUser) {
-                photosByUser.addAll(Arrays.asList(restTemplate.getForObject(
-                        baseUrl + "/photos?albumId=" + album.getId(),
-                        PhotoDto[].class)));
+                photosByUser.addAll(Arrays.asList(restTemplate.getForObject(baseUrl + "/photos?albumId="
+                                + album.getId(), PhotoDto[].class)));
             }
         }
         return photosByUser;

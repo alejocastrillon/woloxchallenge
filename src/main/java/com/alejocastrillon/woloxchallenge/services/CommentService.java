@@ -6,7 +6,6 @@
 package com.alejocastrillon.woloxchallenge.services;
 
 import com.alejocastrillon.woloxchallenge.web.dto.CommentDto;
-import java.util.List;
 
 /**
  * Comment service interface.
@@ -20,7 +19,7 @@ public interface CommentService {
      *
      * @return List of comments
      */
-    List<CommentDto> getAllComents();
+    CommentDto[] getAllComents();
 
     /**
      * Gets all the comments filtered by user email field.
@@ -28,7 +27,7 @@ public interface CommentService {
      * @param filter Filter param
      * @return List of comment
      */
-    List<CommentDto> getCommentsFilteredByEmail(String filter);
+    CommentDto[] getCommentsFilteredByEmail(String filter);
 
     /**
      * Gets all the comments filtered by name field.
@@ -36,6 +35,6 @@ public interface CommentService {
      * @param filter Filter param
      * @return List of comment
      */
-    List<CommentDto> getCommentsFilteredByName(String filter);
+    CommentDto[] getCommentsFilteredByName(String filter);
 
 }

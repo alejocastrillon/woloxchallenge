@@ -51,6 +51,11 @@ public class SharedAlbumServiceImpl implements SharedAlbumService {
     private final ModelMapper mapper = new ModelMapper();
 
     /**
+     * Not found exception message.
+     */
+    private static final String NOT_FOUND_EXCEPTION_MESSAGE = "No shared album was found with the identifier: ";
+
+    /**
      * Persist the information of the shared album.
      *
      * @param album Album information
@@ -59,8 +64,7 @@ public class SharedAlbumServiceImpl implements SharedAlbumService {
     @Override
     public SharedAlbumDto saveAlbumShared(SharedAlbumDto album) {
         if (isValidAlbum(album)) {
-            return mapper.map(repository.save(mapper.map(album,
-                    SharedAlbum.class)), SharedAlbumDto.class);
+            return mapper.map(repository.save(mapper.map(album, SharedAlbum.class)), SharedAlbumDto.class);
         }
         return null;
     }
@@ -131,8 +135,7 @@ public class SharedAlbumServiceImpl implements SharedAlbumService {
         if (optionalShared.isPresent()) {
             return mapper.map(optionalShared.get(), SharedAlbumDto.class);
         } else {
-            throw new NotFoundException("No shared album was found with"
-                    + " the identifier: " + sharedAlbumId);
+            throw new NotFoundException(NOT_FOUND_EXCEPTION_MESSAGE + sharedAlbumId);
         }
     }
 
@@ -154,19 +157,16 @@ public class SharedAlbumServiceImpl implements SharedAlbumService {
             if (ePermission != null) {
                 Set<EPermission> permissionSet = new HashSet<>();
                 permissionSet.add(ePermission);
-                List<SharedAlbum> shared = repository
-                        .findByAlbumIdAndPermissionIn(albumId, permissionSet);
+                List<SharedAlbum> shared = repository.findByAlbumIdAndPermissionIn(albumId, permissionSet);
                 if (shared != null && !shared.isEmpty()) {
                     sharedAlbums = new ArrayList<>();
                     for (SharedAlbum sharedAlbum : shared) {
-                        sharedAlbums.add(mapper.map(sharedAlbum,
-                                SharedAlbumDto.class));
+                        sharedAlbums.add(mapper.map(sharedAlbum, SharedAlbumDto.class));
                     }
                 }
             }
         } catch (RuntimeException e) {
-            throw new NotFoundException(permission + " permission does not"
-                    + " exist");
+            throw new NotFoundException(permission + " permission does not exist");
         }
         return sharedAlbums;
     }

@@ -6,12 +6,12 @@
 package com.alejocastrillon.woloxchallenge.web.controller;
 
 import com.alejocastrillon.woloxchallenge.services.AlbumService;
+import com.alejocastrillon.woloxchallenge.services.exception.httpstatus.NotFoundException;
 import com.alejocastrillon.woloxchallenge.web.dto.AlbumDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ public class AlbumController {
                 responseContainer = "List<>", response = AlbumDto.class)
     })
     @GetMapping()
-    public ResponseEntity<List<AlbumDto>> getAlbums() {
+    public ResponseEntity<AlbumDto[]> getAlbums() {
         return new ResponseEntity<>(service.getAlbums(), HttpStatus.OK);
     }
 
@@ -65,11 +65,28 @@ public class AlbumController {
                 response = AlbumDto.class)
     })
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<AlbumDto>> getAlbumsByUser(
+    public ResponseEntity<AlbumDto[]> getAlbumsByUser(
             @ApiParam(value = "Identificator of the user that we want to know"
                     + " their albums") @PathVariable("userId") Integer userId) {
         return new ResponseEntity<>(service.getAlbumsByUser(userId),
                 HttpStatus.OK);
     }
 
+    /**
+     * Returns in a response entity the specific album information.
+     * @param albumId Identificator of the album that we want to search
+     * @return Album information
+     */
+    @ApiOperation(value = "Returns in a response entity the specific album information")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The album was found successfully", response = AlbumDto.class),
+            @ApiResponse(code = 404, message = "No album was found with this identifier",
+                    response = NotFoundException.class)
+    })
+    @GetMapping("/{albumId}")
+    public ResponseEntity<AlbumDto> getAlbum(
+            @ApiParam(value = "Identificator of the album that we want to search")
+            @PathVariable("albumId") Integer albumId) {
+        return new ResponseEntity<>(service.getAlbum(albumId), HttpStatus.OK);
+    }
 }

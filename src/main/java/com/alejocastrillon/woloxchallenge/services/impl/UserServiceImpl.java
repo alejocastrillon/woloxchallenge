@@ -8,8 +8,6 @@ package com.alejocastrillon.woloxchallenge.services.impl;
 import com.alejocastrillon.woloxchallenge.services.UserService;
 import com.alejocastrillon.woloxchallenge.services.exception.httpstatus.NotFoundException;
 import com.alejocastrillon.woloxchallenge.web.dto.UserDto;
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,10 +28,15 @@ public class UserServiceImpl implements UserService {
     private RestTemplate restTemplate;
 
     /**
-     * Base url for external Rest service.
+     * External Rest service base url.
      */
     @Value("${external.base.url}")
     private String baseUrl;
+
+    /**
+     * Not found exception message.
+     */
+    private static final String NOT_FOUND_EXCEPTION_MESSAGE = "No user found with the identifier: ";
 
     /**
      * Gets all the users.
@@ -41,9 +44,8 @@ public class UserServiceImpl implements UserService {
      * @return User list
      */
     @Override
-    public List<UserDto> getUsers() {
-        return Arrays.asList(restTemplate
-                .getForObject(baseUrl + "/users", UserDto[].class));
+    public UserDto[] getUsers() {
+        return restTemplate.getForObject(baseUrl + "/users", UserDto[].class);
     }
 
     /**
@@ -56,11 +58,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(Integer userId) {
         try {
-            return restTemplate.getForObject(baseUrl + "/users/" + userId,
-                    UserDto.class);
+            return restTemplate.getForObject(baseUrl + "/users/" + userId, UserDto.class);
         } catch (RuntimeException e) {
-            throw new NotFoundException("No user found with the identifier: "
-                    + userId);
+            throw new NotFoundException(NOT_FOUND_EXCEPTION_MESSAGE + userId);
         }
     }
 
